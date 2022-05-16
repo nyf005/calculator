@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+}
+
+.container {
+    width: 80vw;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+#header {
+    height: 15vh;
+    color: #f2f8fc;
+    background-color: #0072c5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+#main {
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#calculator {
+    background-color: #fff;
+    width: 648px;
+    height: 365px;
+    padding: 15px 19px;
+    border-radius: 6px;
+    box-shadow: 0 0 0 1px rgba(0,0,0,.05),0 2px 3px 0 rgba(0,0,0,.1);border: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#calculator-display {
+    height: 75px;
+    padding: 0 20px;
+    background-color: #f2f8fc;
+    border: 1px solid #0072c5;
+    border-top: 4px solid #0072c5;
+    color: black;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    font-size: 40px;
+}
+
+#calculator .focus {
+    background-color: #fff;
+    border: 1px solid #0072c5;
+}
+
+#calculator-btns {
+    height: 240px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+#calculator-btns button {
+    width: 78px;
+    height: 40px;
+    padding: 2px 6px;
+    background-color: #eee;
+    border: 1px #ddd solid;
+    font-size: 18px;  
+}
+
+#calculator-btns button:hover {
+    background-color: #ccc;
+}
+
+#calculator-btns .num {
+    background-color: #ccc;
+    font-weight: bold;
+}
+
+#calculator-btns .num:hover {
+    background-color: #aaa;
+}
+
+#calculator-btns .equal {
+    color: #fff;
+    background-color: #0072c5;
+    border-color: #0072c5;
+    font-weight: bold;
+}
+
+#calculator-btns .equal:hover {
+    background-color: #005b9e;
+    border: 1px solid #005b9e;
+}
+
+#footer {
+    height: 10vh;
+    color: #f2f8fc;
+    background-color: #0072c5;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+}
