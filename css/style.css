@@ -104,6 +104,18 @@ body {
     border: 1px solid #005b9e;
 }
 
+#calculator-btns .del {
+    color: #fff;
+    background-color: #f44336;
+    border-color: #f44336;
+    font-weight: bold;
+}
+
+#calculator-btns .del:hover {
+    background-color: #d32f2f;
+    border: 1px solid #d32f2f;
+}
+
 #footer {
     height: 10vh;
     color: #f2f8fc;
