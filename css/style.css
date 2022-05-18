@@ -62,7 +62,12 @@ body {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    font-size: 40px;
+    font-size: 36px;
+    overflow: hidden;
+}
+
+#operation {
+    height: 20px;
 }
 
 #calculator .focus {
@@ -93,6 +98,10 @@ body {
 #calculator-btns .num {
     background-color: #ccc;
     font-weight: bold;
+    font-size: 24px;
+}
+
+#calculator-btns .key-op {
     font-size: 24px;
 }
 

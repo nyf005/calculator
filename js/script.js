@@ -1,3 +1,17 @@
+const displayOperation = document.querySelector("#operation p");
+const displayResult = document.querySelector("#result p");
+
+const numBtns = document.querySelectorAll(".num");
+numBtns.forEach((numBtn) => numBtn.addEventListener("click", populateDisplay));
+
+function populateDisplay(numBtn) {
+  let keyValue = numBtn.target.textContent;
+  if (displayResult.textContent == "0" && keyValue != ".") {
+    displayResult.textContent = "";
+  }
+  displayResult.textContent += keyValue;
+}
+
 function operate(operator, num1, num2) {
   let result = 0;
 
