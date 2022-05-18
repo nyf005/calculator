@@ -4,11 +4,17 @@ let lastNum;
 let operator;
 
 const displayOperation = document.querySelector("#operation p");
+const displayResultDiv = document.querySelector("#result");
 const displayResult = document.querySelector("#result p");
 displayResult.textContent = 0;
 
 const numBtns = document.querySelectorAll(".num");
-numBtns.forEach((numBtn) => numBtn.addEventListener("click", populateDisplay));
+numBtns.forEach((numBtn) =>
+  numBtn.addEventListener("click", (e) => {
+    populateDisplay(e);
+    displayResultDiv.classList.add("focus");
+  })
+);
 
 const operationBtns = document.querySelectorAll(".key-op");
 operationBtns.forEach((operationBtn) => {
@@ -16,13 +22,19 @@ operationBtns.forEach((operationBtn) => {
     // Set operatorClicked tot true so we could clear the screen when entering new number
     operatorClicked = true;
     lastNum = currentNum;
-    operator = e.target.getAttribute("data-value");
+    operator = e.target;
   });
 });
 
 const equalBtn = document.querySelector(".equal");
 equalBtn.addEventListener("click", () => {
-  currentNum = operate(operator, lastNum, currentNum);
+  displayOperation.textContent = `${lastNum} ${operator.textContent} ${currentNum} =`;
+  currentNum = operate(
+    operator.getAttribute("data-value"),
+    lastNum,
+    currentNum
+  );
+  displayResultDiv.classList.remove("focus");
   displayResult.textContent = currentNum;
 });
 
