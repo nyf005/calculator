@@ -1,6 +1,4 @@
-let total;
-let currentNum;
-let lastNum;
+let total, currentNum, previousNum;
 let operator;
 let operatorClicked = false;
 
@@ -13,9 +11,9 @@ const numBtns = document.querySelectorAll(".num");
 numBtns.forEach((numBtn) =>
   numBtn.addEventListener("click", (e) => {
     //   Reset total value if no operator has been clicked (for example after the equal button clicked)
-    if (!operatorClicked) {
-      total = 0;
-    }
+    // if (!operatorClicked) {
+    //   total = 0;
+    // }
     populateDisplay(e);
     displayResultDiv.classList.add("focus");
   })
@@ -24,12 +22,22 @@ numBtns.forEach((numBtn) =>
 const operationBtns = document.querySelectorAll(".key-op");
 operationBtns.forEach((operationBtn) => {
   operationBtn.addEventListener("click", (e) => {
-    // Set operatorClicked tot true so we could clear the screen when entering new number
+    // Set operatorClicked to true so we could clear the screen when entering new number
     operatorClicked = true;
     displayResultDiv.classList.add("focus");
     displayOperation.textContent = "";
 
-    lastNum = total ? total : currentNum;
+    if (!previousNum && !total) {
+      previousNum = currentNum;
+    } else {
+      total = operate(
+        operator.getAttribute("data-value"),
+        previousNum,
+        currentNum
+      );
+      updateUIAfterCalculation(operator, previousNum, currentNum, total);
+      previousNum = total;
+    }
 
     operator = e.target;
   });
@@ -37,16 +45,30 @@ operationBtns.forEach((operationBtn) => {
 
 const equalBtn = document.querySelector(".equal");
 equalBtn.addEventListener("click", () => {
-  if (lastNum && currentNum) {
-    displayOperation.textContent = `${lastNum} ${operator.textContent} ${currentNum} =`;
-    total = operate(operator.getAttribute("data-value"), lastNum, currentNum);
-    displayResultDiv.classList.remove("focus");
-    displayResult.textContent = total;
+  if (currentNum && previousNum) {
+    total = operate(
+      operator.getAttribute("data-value"),
+      previousNum,
+      currentNum
+    );
 
+    updateUIAfterCalculation(operator, previousNum, currentNum, total);
     //   Reset values after equal button pressed
     operatorClicked = !operatorClicked;
   }
 });
+
+function updateUIAfterCalculation(
+  operator,
+  operand1,
+  operand2,
+  calculationResult
+) {
+  displayOperation.textContent = `${operand1} ${operator.textContent} ${operand2} =`;
+
+  displayResultDiv.classList.remove("focus");
+  displayResult.textContent = calculationResult;
+}
 
 function populateDisplay(numBtn) {
   let keyValue = numBtn.target.textContent;
@@ -86,6 +108,7 @@ function operate(operator, num1, num2) {
     default:
       break;
   }
+
   return result;
 }
 
