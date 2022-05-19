@@ -1,3 +1,4 @@
+let total;
 let currentNum;
 let operatorClicked = false;
 let lastNum;
@@ -11,6 +12,10 @@ displayResult.textContent = 0;
 const numBtns = document.querySelectorAll(".num");
 numBtns.forEach((numBtn) =>
   numBtn.addEventListener("click", (e) => {
+    //   Reset total value if no operator has been clicked (for example after the equal button clicked)
+    if (!operatorClicked) {
+      total = 0;
+    }
     populateDisplay(e);
     displayResultDiv.classList.add("focus");
   })
@@ -21,7 +26,10 @@ operationBtns.forEach((operationBtn) => {
   operationBtn.addEventListener("click", (e) => {
     // Set operatorClicked tot true so we could clear the screen when entering new number
     operatorClicked = true;
-    lastNum = currentNum;
+    displayResultDiv.classList.add("focus");
+    displayOperation.textContent = "";
+
+    lastNum = total ? total : currentNum;
     operator = e.target;
   });
 });
@@ -29,13 +37,12 @@ operationBtns.forEach((operationBtn) => {
 const equalBtn = document.querySelector(".equal");
 equalBtn.addEventListener("click", () => {
   displayOperation.textContent = `${lastNum} ${operator.textContent} ${currentNum} =`;
-  currentNum = operate(
-    operator.getAttribute("data-value"),
-    lastNum,
-    currentNum
-  );
+  total = operate(operator.getAttribute("data-value"), lastNum, currentNum);
   displayResultDiv.classList.remove("focus");
-  displayResult.textContent = currentNum;
+  displayResult.textContent = total;
+
+  //   Reset values after equal button pressed
+  operatorClicked = !operatorClicked;
 });
 
 function populateDisplay(numBtn) {
@@ -47,11 +54,12 @@ function populateDisplay(numBtn) {
     displayResult.textContent = "";
   }
 
-  //   Set to false so if we want to enter a number we more digits the screen does not clear each time we click on a number
+  // Set to false so if we want to enter a number we more digits the screen does not clear each time we click on a number
   operatorClicked = false;
   displayResult.textContent += keyValue;
 
   currentNum = Number(displayResult.textContent);
+  console.log(currentNum);
 }
 
 function operate(operator, num1, num2) {

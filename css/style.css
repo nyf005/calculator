@@ -103,6 +103,11 @@ body {
 
 #calculator-btns .key-op {
     font-size: 24px;
+    background-color: #f7d99d;
+}
+
+#calculator-btns .key-op:hover {
+    background-color: #fcc65a;
 }
 
 #calculator-btns .num:hover {
