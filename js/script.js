@@ -1,8 +1,8 @@
 let total;
 let currentNum;
-let operatorClicked = false;
 let lastNum;
 let operator;
+let operatorClicked = false;
 
 const displayOperation = document.querySelector("#operation p");
 const displayResultDiv = document.querySelector("#result");
@@ -30,19 +30,22 @@ operationBtns.forEach((operationBtn) => {
     displayOperation.textContent = "";
 
     lastNum = total ? total : currentNum;
+
     operator = e.target;
   });
 });
 
 const equalBtn = document.querySelector(".equal");
 equalBtn.addEventListener("click", () => {
-  displayOperation.textContent = `${lastNum} ${operator.textContent} ${currentNum} =`;
-  total = operate(operator.getAttribute("data-value"), lastNum, currentNum);
-  displayResultDiv.classList.remove("focus");
-  displayResult.textContent = total;
+  if (lastNum && currentNum) {
+    displayOperation.textContent = `${lastNum} ${operator.textContent} ${currentNum} =`;
+    total = operate(operator.getAttribute("data-value"), lastNum, currentNum);
+    displayResultDiv.classList.remove("focus");
+    displayResult.textContent = total;
 
-  //   Reset values after equal button pressed
-  operatorClicked = !operatorClicked;
+    //   Reset values after equal button pressed
+    operatorClicked = !operatorClicked;
+  }
 });
 
 function populateDisplay(numBtn) {
@@ -59,7 +62,6 @@ function populateDisplay(numBtn) {
   displayResult.textContent += keyValue;
 
   currentNum = Number(displayResult.textContent);
-  console.log(currentNum);
 }
 
 function operate(operator, num1, num2) {
