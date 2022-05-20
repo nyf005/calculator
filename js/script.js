@@ -128,7 +128,7 @@ function operate(operator, num1, num2) {
       break;
   }
 
-  return Number.isInteger(result) ? result : result.toFixed(8);
+  return Number.isInteger(result) ? result : result.toFixed(8).toString();
 }
 
 function add(num1, num2) {
