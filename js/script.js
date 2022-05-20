@@ -8,55 +8,28 @@ const displayResult = document.querySelector("#result p");
 displayResult.textContent = 0;
 
 const numBtns = document.querySelectorAll(".num");
-numBtns.forEach((numBtn) =>
-  numBtn.addEventListener("click", (e) => {
-    //   Reset total value if no operator has been clicked (for example after the equal button clicked)
-    // if (!operatorClicked) {
-    //   total = 0;
-    // }
-    populateDisplay(e);
-    displayResultDiv.classList.add("focus");
-  })
-);
+numBtns.forEach((numBtn) => numBtn.addEventListener("click", inputDigit));
 
 const operationBtns = document.querySelectorAll(".key-op");
 operationBtns.forEach((operationBtn) => {
-  operationBtn.addEventListener("click", (e) => {
-    // Set operatorClicked to true so we could clear the screen when entering new number
-    operatorClicked = true;
-    displayResultDiv.classList.add("focus");
-    displayOperation.textContent = "";
-
-    if (!previousNum && !total) {
-      previousNum = currentNum;
-    } else {
-      total = operate(
-        operator.getAttribute("data-value"),
-        previousNum,
-        currentNum
-      );
-      updateUIAfterCalculation(operator, previousNum, currentNum, total);
-      previousNum = total;
-    }
-
-    operator = e.target;
-  });
+  operationBtn.addEventListener("click", inputOperator);
 });
 
-const equalBtn = document.querySelector(".equal");
-equalBtn.addEventListener("click", () => {
-  if (currentNum && previousNum) {
-    total = operate(
-      operator.getAttribute("data-value"),
-      previousNum,
-      currentNum
-    );
+const equalBtn = document.getElementById("equal");
+equalBtn.addEventListener("click", inputEquals);
 
-    updateUIAfterCalculation(operator, previousNum, currentNum, total);
-    //   Reset values after equal button pressed
-    operatorClicked = !operatorClicked;
-  }
-});
+const clearBtn = document.getElementById("clear");
+clearBtn.addEventListener("click", () => resetCalculator());
+
+function resetCalculator() {
+  total = 0;
+  currentNum = 0;
+  previousNum = 0;
+  operator = null;
+  operatorClicked = false;
+  displayOperation.textContent = "";
+  displayResult.textContent = "0";
+}
 
 function updateUIAfterCalculation(
   operator,
@@ -70,8 +43,54 @@ function updateUIAfterCalculation(
   displayResult.textContent = calculationResult;
 }
 
+function inputEquals() {
+  if (currentNum && previousNum) {
+    total = operate(
+      operator.getAttribute("data-value"),
+      previousNum,
+      currentNum
+    );
+
+    updateUIAfterCalculation(operator, previousNum, currentNum, total);
+    // Set to false so if user type a digit right after equals everything is cleared (in the )
+    operatorClicked = false;
+  }
+}
+
+function inputOperator(input) {
+  // Set operatorClicked to true so we could clear the screen when entering new number
+  operatorClicked = true;
+  displayResultDiv.classList.add("focus");
+  displayOperation.textContent = "";
+
+  if (!previousNum && !total) {
+    previousNum = currentNum;
+  } else {
+    total = operate(
+      operator.getAttribute("data-value"),
+      previousNum,
+      currentNum
+    );
+    updateUIAfterCalculation(operator, previousNum, currentNum, total);
+    previousNum = total;
+  }
+
+  operator = input.target;
+}
+
+function inputDigit(input) {
+  //   Reset calculator  if no operator has been clicked after the equals button clicked
+  if (!operatorClicked && total) {
+    total = 0;
+  }
+  populateDisplay(input);
+  displayResultDiv.classList.add("focus");
+}
+
 function populateDisplay(numBtn) {
   let keyValue = numBtn.target.textContent;
+
+  //   To prevent removing the 0 if user type on the dot
   if (
     (displayResult.textContent == "0" && keyValue != ".") ||
     operatorClicked
@@ -79,7 +98,7 @@ function populateDisplay(numBtn) {
     displayResult.textContent = "";
   }
 
-  // Set to false so if we want to enter a number we more digits the screen does not clear each time we click on a number
+  // Set to false so if we want to enter a number with more digits the screen does not clear each time we click on a number
   operatorClicked = false;
   displayResult.textContent += keyValue;
 
@@ -109,7 +128,7 @@ function operate(operator, num1, num2) {
       break;
   }
 
-  return result;
+  return Number.isInteger(result) ? result : result.toFixed(8);
 }
 
 function add(num1, num2) {

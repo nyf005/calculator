@@ -114,14 +114,14 @@ body {
     background-color: #aaa;
 }
 
-#calculator-btns .equal {
+#calculator-btns #equal {
     color: #fff;
     background-color: #0072c5;
     border-color: #0072c5;
     font-weight: bold;
 }
 
-#calculator-btns .equal:hover {
+#calculator-btns #equal:hover {
     background-color: #005b9e;
     border: 1px solid #005b9e;
 }
