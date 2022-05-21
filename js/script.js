@@ -33,6 +33,10 @@ function resetCalculator() {
   displayResult.textContent = "0";
 }
 
+function round(value, decimals) {
+  return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+}
+
 function updateUIAfterCalculation(
   operator,
   operand1,
@@ -42,7 +46,7 @@ function updateUIAfterCalculation(
   displayOperation.textContent = `${operand1} ${operator.textContent} ${operand2} =`;
 
   displayResultDiv.classList.remove("focus");
-  displayResult.textContent = calculationResult;
+  displayResult.textContent = round(calculationResult, 8);
 }
 
 function inputEquals() {
