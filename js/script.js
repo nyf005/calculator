@@ -82,6 +82,7 @@ function inputOperator(event) {
   isEqualsActive = false;
 
   dotBtn.classList.remove("disabled");
+
   displayResultDiv.classList.add("focus");
   displayOperation.textContent = "";
 
@@ -111,9 +112,7 @@ function inputDigit(event) {
 
   populateDisplay(event);
   displayResultDiv.classList.add("focus");
-
   if (displayResult.textContent.includes(".")) {
-    // dotBtn.setAttribute("disabled", "disabled");
     dotBtn.classList.add("disabled");
   }
 }
@@ -126,11 +125,13 @@ function populateDisplay(numBtn) {
     (displayResult.textContent == "0" && keyValue != ".") ||
     isOperatorActive
   ) {
-    displayResult.textContent = "";
+    // Put 0 before dot if it is pressed without 0
+    displayResult.textContent = isOperatorActive && keyValue == "." ? 0 : "";
   }
 
   // Set to false so if we want to enter a number with more digits the screen does not clear each time we click on a number
   isOperatorActive = false;
+
   displayResult.textContent += keyValue;
 
   currentNum = Number(displayResult.textContent);
