@@ -12,6 +12,14 @@ const numBtns = document.querySelectorAll(".num");
 const operationBtns = document.querySelectorAll(".key-op");
 const equalBtn = document.getElementById("equal");
 const clearBtn = document.getElementById("clear");
+const dotBtn = document.getElementById("dot");
+
+// TODO: Allow to use negative values in calculations
+// TODO: Backspace functionnality
+// TODO: Display error message on division by 0
+// TODO: Other operators functionnalities
+// TODO: Inv functionnality
+// TODO: Eventually parenthesis functionnality
 
 numBtns.forEach((numBtn) => numBtn.addEventListener("click", inputDigit));
 
@@ -31,6 +39,7 @@ function resetCalculator() {
   isOperatorActive = false;
   displayOperation.textContent = "";
   displayResult.textContent = "0";
+  dotBtn.classList.remove("disabled");
 }
 
 function round(value, decimals) {
@@ -61,6 +70,7 @@ function inputEquals() {
     // Set to false so if user type a digit right after equals everything is cleared (in the )
     isOperatorActive = false;
     isEqualsActive = true;
+    dotBtn.classList.remove("disabled");
   }
 }
 
@@ -70,6 +80,8 @@ function inputOperator(event) {
 
   // set isEqualsActive to false so we can still use the total of an operation after pressing equal sign
   isEqualsActive = false;
+
+  dotBtn.classList.remove("disabled");
   displayResultDiv.classList.add("focus");
   displayOperation.textContent = "";
 
@@ -99,6 +111,11 @@ function inputDigit(event) {
 
   populateDisplay(event);
   displayResultDiv.classList.add("focus");
+
+  if (displayResult.textContent.includes(".")) {
+    // dotBtn.setAttribute("disabled", "disabled");
+    dotBtn.classList.add("disabled");
+  }
 }
 
 function populateDisplay(numBtn) {

@@ -114,6 +114,11 @@ body {
     background-color: #aaa;
 }
 
+.disabled {
+    pointer-events: none;
+    opacity: 0.3;
+  }
+  
 #calculator-btns #equal {
     color: #fff;
     background-color: #0072c5;
