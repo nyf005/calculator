@@ -13,9 +13,10 @@ const operationBtns = document.querySelectorAll(".key-op");
 const equalBtn = document.getElementById("equal");
 const clearBtn = document.getElementById("clear");
 const dotBtn = document.getElementById("dot");
+const delBtn = document.getElementById("del");
 
-// TODO: Allow to use negative values in calculations
 // TODO: Backspace functionnality
+// TODO: Allow to use negative values in calculations
 // TODO: Display error message on division by 0
 // TODO: Other operators functionnalities
 // TODO: Inv functionnality
@@ -30,6 +31,17 @@ operationBtns.forEach((operationBtn) => {
 equalBtn.addEventListener("click", inputEquals);
 
 clearBtn.addEventListener("click", () => resetCalculator());
+
+delBtn.addEventListener("click", deleteDigit);
+
+function deleteDigit() {
+  if (displayResult.textContent != 0 && !isEqualsActive && !isOperatorActive) {
+    displayResult.textContent = displayResult.textContent.slice(0, -1);
+    currentNum = displayResult.textContent;
+  } else {
+    resetCalculator();
+  }
+}
 
 function resetCalculator() {
   total = 0;

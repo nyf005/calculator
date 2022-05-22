@@ -118,7 +118,7 @@ body {
     pointer-events: none;
     opacity: 0.3;
   }
-  
+
 #calculator-btns #equal {
     color: #fff;
     background-color: #0072c5;
@@ -131,14 +131,14 @@ body {
     border: 1px solid #005b9e;
 }
 
-#calculator-btns .del {
+#calculator-btns  #del {
     color: #fff;
     background-color: #f44336;
     border-color: #f44336;
     font-weight: bold;
 }
 
-#calculator-btns .del:hover {
+#calculator-btns #del:hover {
     background-color: #d32f2f;
     border: 1px solid #d32f2f;
 }
