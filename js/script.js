@@ -1,4 +1,6 @@
-let total, currentNum, previousNum;
+let total = null,
+  currentNum = null,
+  previousNum = null;
 let operator;
 let isOperatorActive = false;
 let isEqualsActive = false;
@@ -15,7 +17,6 @@ const clearBtn = document.getElementById("clear");
 const dotBtn = document.getElementById("dot");
 const delBtn = document.getElementById("del");
 
-// TODO: Backspace functionnality
 // TODO: Allow to use negative values in calculations
 // TODO: Display error message on division by 0
 // TODO: Other operators functionnalities
@@ -37,16 +38,16 @@ delBtn.addEventListener("click", deleteDigit);
 function deleteDigit() {
   if (displayResult.textContent != 0 && !isEqualsActive && !isOperatorActive) {
     displayResult.textContent = displayResult.textContent.slice(0, -1);
-    currentNum = displayResult.textContent;
+    currentNum = Number(displayResult.textContent);
   } else {
     resetCalculator();
   }
 }
 
 function resetCalculator() {
-  total = 0;
-  currentNum = 0;
-  previousNum = 0;
+  total = null;
+  currentNum = null;
+  previousNum = null;
   operator = null;
   isOperatorActive = false;
   displayOperation.textContent = "";
@@ -64,14 +65,23 @@ function updateUIAfterCalculation(
   operand2,
   calculationResult
 ) {
-  displayOperation.textContent = `${operand1} ${operator.textContent} ${operand2} =`;
+  displayOperation.textContent = `${round(operand1, 8)} ${
+    operator.textContent
+  } ${operand2} =`;
 
   displayResultDiv.classList.remove("focus");
-  displayResult.textContent = round(calculationResult, 8);
+
+  if (typeof result == "number") {
+    displayResult.textContent = round(calculationResult, 8);
+  } else {
+    displayResult.textContent = calculationResult;
+    currentNum = null;
+    previousNum = null;
+  }
 }
 
 function inputEquals() {
-  if (currentNum && previousNum) {
+  if (previousNum != null && currentNum != null) {
     total = operate(
       operator.getAttribute("data-value"),
       previousNum,
@@ -87,30 +97,32 @@ function inputEquals() {
 }
 
 function inputOperator(event) {
-  // Set isOperatorActive to true so we could clear the screen when entering new number after an operator is pressed
-  isOperatorActive = true;
+  if (currentNum != null && event.target != operator) {
+    // Set isOperatorActive to true so we could clear the screen when entering new number after an operator is pressed
+    isOperatorActive = true;
 
-  // set isEqualsActive to false so we can still use the total of an operation after pressing equal sign
-  isEqualsActive = false;
+    // set isEqualsActive to false so we can still use the total of an operation after pressing equal sign
+    isEqualsActive = false;
 
-  dotBtn.classList.remove("disabled");
+    dotBtn.classList.remove("disabled");
+    displayResultDiv.classList.add("focus");
+    displayOperation.textContent = "";
 
-  displayResultDiv.classList.add("focus");
-  displayOperation.textContent = "";
+    if (previousNum != null && currentNum != null) {
+      total = operate(
+        operator.getAttribute("data-value"),
+        previousNum,
+        currentNum
+      );
+      updateUIAfterCalculation(operator, previousNum, currentNum, total);
+      // previousNum = total;
+    }
 
-  if (!previousNum && !total) {
-    previousNum = currentNum;
-  } else {
-    total = operate(
-      operator.getAttribute("data-value"),
-      previousNum,
-      currentNum
-    );
-    updateUIAfterCalculation(operator, previousNum, currentNum, total);
-    previousNum = total;
+    previousNum = total != null ? total : currentNum;
+    currentNum = null;
+
+    operator = event.target;
   }
-
-  operator = event.target;
 }
 
 function inputDigit(event) {
@@ -167,13 +179,13 @@ function operate(operator, num1, num2) {
 
     case "/":
       result = divide(num1, num2);
+      break;
 
     default:
       break;
   }
 
   return result;
-  //   return Number.isInteger(result) ? result : result.toPrecision(16);
 }
 
 function add(num1, num2) {
@@ -189,5 +201,5 @@ function multiply(num1, num2) {
 }
 
 function divide(num1, num2) {
-  return num1 / num2;
+  return num2 == 0 ? "Cannot divide by 0" : num1 / num2;
 }
