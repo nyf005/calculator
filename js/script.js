@@ -18,7 +18,7 @@ const dotBtn = document.getElementById("dot");
 const delBtn = document.getElementById("del");
 
 // TODO: Allow to use negative values in calculations
-// TODO: Display error message on division by 0
+
 // TODO: Other operators functionnalities
 // TODO: Inv functionnality
 // TODO: Eventually parenthesis functionnality
@@ -71,7 +71,7 @@ function updateUIAfterCalculation(
 
   displayResultDiv.classList.remove("focus");
 
-  if (typeof result == "number") {
+  if (typeof calculationResult == "number") {
     displayResult.textContent = round(calculationResult, 8);
   } else {
     displayResult.textContent = calculationResult;
@@ -115,7 +115,6 @@ function inputOperator(event) {
         currentNum
       );
       updateUIAfterCalculation(operator, previousNum, currentNum, total);
-      // previousNum = total;
     }
 
     previousNum = total != null ? total : currentNum;
