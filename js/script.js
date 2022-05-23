@@ -1,7 +1,7 @@
 let total = null,
   currentNum = null,
   previousNum = null;
-let operator;
+let operator = null;
 let isOperatorActive = false;
 let isEqualsActive = false;
 
@@ -16,8 +16,6 @@ const equalBtn = document.getElementById("equal");
 const clearBtn = document.getElementById("clear");
 const dotBtn = document.getElementById("dot");
 const delBtn = document.getElementById("del");
-
-// TODO: Allow to use negative values in calculations
 
 // TODO: Other operators functionnalities
 // TODO: Inv functionnality
@@ -97,7 +95,7 @@ function inputEquals() {
 }
 
 function inputOperator(event) {
-  if (currentNum != null && event.target != operator) {
+  if (currentNum != null) {
     // Set isOperatorActive to true so we could clear the screen when entering new number after an operator is pressed
     isOperatorActive = true;
 
@@ -121,6 +119,24 @@ function inputOperator(event) {
     currentNum = null;
 
     operator = event.target;
+  } else {
+    if (!operator && event.target.getAttribute("data-value") == "-") {
+      // Add minus sign if the first number is negative
+      displayResult.textContent = "-";
+      operator = null;
+    } else if (
+      operator &&
+      (operator.getAttribute("data-value") == "*" ||
+        operator.getAttribute("data-value") == "/") &&
+      event.target.getAttribute("data-value") == "-"
+    ) {
+      // Add minus sign if the 2nd number is negative
+      displayResult.textContent = "-";
+      // isOperatorActive = false;
+    } else {
+      // Multiple clicks on operator
+      operator = event.target;
+    }
   }
 }
 
@@ -146,7 +162,7 @@ function populateDisplay(numBtn) {
   //   To prevent removing the 0 if user type on the dot
   if (
     (displayResult.textContent == "0" && keyValue != ".") ||
-    isOperatorActive
+    (isOperatorActive && displayResult.textContent != "-")
   ) {
     // Put 0 before dot if it is pressed without 0
     displayResult.textContent = isOperatorActive && keyValue == "." ? 0 : "";
