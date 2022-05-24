@@ -18,4 +18,4 @@ This is an online calculator project to practice the basics of HTML, CSS and Jav
 
 ## Screenshots
 
-![](https://user-images.githubusercontent.com/32721495/163601636-3c592638-207f-413e-b0bb-c930d3fd46b6.png)
+![](https://github.com/nyf005/calculator/blob/main/Screen%20Shot%202022-05-24%20at%2020.40.30.png)
