@@ -129,7 +129,9 @@ function inputOperator(event) {
     } else if (
       operator &&
       (operator.getAttribute("data-value") == "*" ||
-        operator.getAttribute("data-value") == "/") &&
+        operator.getAttribute("data-value") == "/" ||
+        operator.getAttribute("data-value") == "E" ||
+        operator.getAttribute("data-value") == "ˆ") &&
       event.target.getAttribute("data-value") == "-"
     ) {
       // Add minus sign if the 2nd number is negative
@@ -196,6 +198,14 @@ function operate(operator, num1, num2) {
 
     case "/":
       result = divide(num1, num2);
+      break;
+
+    case "E":
+      result = multiply(num1, Math.pow(10, num2));
+      break;
+
+    case "ˆ":
+      result = Math.pow(num1, num2);
       break;
 
     default:

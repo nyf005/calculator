@@ -108,8 +108,16 @@ body {
     background-color: #f7d99d;
 }
 
+#calculator-btns .scientific-op {
+    background-color: #eee;
+}
+
 #calculator-btns .key-op:hover {
     background-color: #fcc65a;
+}
+
+#calculator-btns .scientific-op:hover {
+    background-color: #ccc;
 }
 
 #calculator-btns .num:hover {
