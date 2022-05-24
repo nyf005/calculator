@@ -17,6 +17,8 @@ const clearBtn = document.getElementById("clear");
 const dotBtn = document.getElementById("dot");
 const delBtn = document.getElementById("del");
 
+const percentageBtn = document.getElementById("percentage");
+
 // TODO: Other operators functionnalities
 // TODO: Inv functionnality
 // TODO: Eventually parenthesis functionnality

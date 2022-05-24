@@ -35,7 +35,7 @@ body {
 
 #calculator {
     background-color: #fff;
-    width: 648px;
+    width: 488px;
     height: 365px;
     padding: 15px 19px;
     border-radius: 6px;
@@ -96,10 +96,11 @@ body {
 }
 
 #calculator-btns .num {
-    background-color: #c9c9c9;
+    background-color: #fff;
+    color: #0072c5;
     font-weight: bold;
     font-size: 24px;
-    font-weight: normal;
+    font-weight: bolder;
 }
 
 #calculator-btns .key-op {
@@ -112,7 +113,8 @@ body {
 }
 
 #calculator-btns .num:hover {
-    background-color: #aaa;
+    background-color: #fff;
+    border-color: #0072c5;
 }
 
 .disabled {
