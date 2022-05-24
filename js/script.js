@@ -130,7 +130,7 @@ function inputOperator(event) {
       operator &&
       (operator.getAttribute("data-value") == "*" ||
         operator.getAttribute("data-value") == "/" ||
-        operator.getAttribute("data-value") == "E" ||
+        operator.getAttribute("data-value") == "EXP" ||
         operator.getAttribute("data-value") == "ˆ") &&
       event.target.getAttribute("data-value") == "-"
     ) {
@@ -180,34 +180,53 @@ function populateDisplay(numBtn) {
   currentNum = Number(displayResult.textContent);
 }
 
-function operate(operator, num1, num2) {
+function operate(...args) {
   let result = 0;
 
-  switch (operator) {
+  switch (args[0]) {
     case "+":
-      result = add(num1, num2);
+      result = add(args[1], args[2]);
       break;
 
     case "-":
-      result = substract(num1, num2);
+      result = substract(args[1], args[2]);
       break;
 
     case "*":
-      result = multiply(num1, num2);
+      result = multiply(args[1], args[2]);
       break;
 
     case "/":
-      result = divide(num1, num2);
+      result = divide(args[1], args[2]);
       break;
 
-    case "E":
-      result = multiply(num1, Math.pow(10, num2));
+    case "EXP":
+      result = multiply(args[1], Math.pow(10, args[2]));
       break;
 
-    case "ˆ":
-      result = Math.pow(num1, num2);
+    case "exponent":
+      result = Math.pow(args[1], args[2]);
       break;
 
+    case "percentage":
+      result = divide(args[1], 100);
+      break;
+
+    case "factorial":
+      result = factorial(args[1]);
+      break;
+
+    case "sqrt":
+      result = Math.sqrt(args[1]);
+      break;
+
+    case "inverse":
+      result = divide(1, args[1]);
+      break;
+
+    case "euler":
+      result = Math.E;
+      break;
     default:
       break;
   }
@@ -229,4 +248,9 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
   return num2 == 0 ? "Cannot divide by 0" : num1 / num2;
+}
+
+function factorial(num) {
+  if (num == 0 || num == 1) return 1;
+  return num * factorial(num - 1);
 }
