@@ -19,9 +19,14 @@ const delBtn = document.getElementById("del");
 
 const percentageBtn = document.getElementById("percentage");
 
-// TODO: Other operators functionnalities
-// TODO: Inv functionnality
-// TODO: Eventually parenthesis functionnality
+percentageBtn.addEventListener("click", (e) => {
+  if (currentNum != null || total != null) {
+    let previousTotal = total != null ? total : currentNum;
+    total = operate(e.target.getAttribute("data-value"), previousTotal, null);
+
+    updateUIAfterCalculation(e.target, previousTotal, "", total);
+  }
+});
 
 numBtns.forEach((numBtn) => numBtn.addEventListener("click", inputDigit));
 
@@ -56,7 +61,7 @@ function resetCalculator() {
 }
 
 function round(value, decimals) {
-  return Number(Math.round(value + "e" + decimals) + "e-" + decimals);
+  return parseFloat(Math.round(value + "e" + decimals) + "e-" + decimals);
 }
 
 function updateUIAfterCalculation(
@@ -65,15 +70,30 @@ function updateUIAfterCalculation(
   operand2,
   calculationResult
 ) {
-  displayOperation.textContent = `${round(operand1, 8)} ${
-    operator.textContent
-  } ${operand2} =`;
-
   displayResultDiv.classList.remove("focus");
 
   if (typeof calculationResult == "number") {
-    displayResult.textContent = round(calculationResult, 8);
+    if (calculationResult.toString().includes("e+")) {
+      displayOperation.textContent = operand1.toString().includes("e+")
+        ? `${round(operand1.toString().split("e+")[0], 8)}E${
+            operand1.toString().split("e+")[1]
+          } ${operator.textContent} ${operand2} =`
+        : `${round(operand1, 8)} ${operator.textContent} ${operand2} =`;
+
+      displayResult.textContent = `${round(
+        calculationResult.toString().split("e+")[0],
+        8
+      )}E${calculationResult.toString().split("e+")[1]}`;
+    } else {
+      displayOperation.textContent = `${round(operand1, 8)} ${
+        operator.textContent
+      } ${operand2} =`;
+      displayResult.textContent = round(calculationResult, 8);
+    }
   } else {
+    displayOperation.textContent = `${round(operand1, 8)} ${
+      operator.textContent
+    } ${operand2} =`;
     displayResult.textContent = calculationResult;
     currentNum = null;
     previousNum = null;
@@ -108,7 +128,7 @@ function inputOperator(event) {
     displayResultDiv.classList.add("focus");
     displayOperation.textContent = "";
 
-    if (previousNum != null && currentNum != null) {
+    if (previousNum != null) {
       total = operate(
         operator.getAttribute("data-value"),
         previousNum,
@@ -116,7 +136,7 @@ function inputOperator(event) {
       );
       updateUIAfterCalculation(operator, previousNum, currentNum, total);
     }
-
+    // Save the total of the last operation or the current number in the previousNum variable
     previousNum = total != null ? total : currentNum;
     currentNum = null;
 
@@ -125,13 +145,12 @@ function inputOperator(event) {
     if (!operator && event.target.getAttribute("data-value") == "-") {
       // Add minus sign if the first number is negative
       displayResult.textContent = "-";
-      operator = null;
     } else if (
       operator &&
       (operator.getAttribute("data-value") == "*" ||
         operator.getAttribute("data-value") == "/" ||
         operator.getAttribute("data-value") == "EXP" ||
-        operator.getAttribute("data-value") == "ˆ") &&
+        operator.getAttribute("data-value") == "exponent") &&
       event.target.getAttribute("data-value") == "-"
     ) {
       // Add minus sign if the 2nd number is negative
@@ -200,10 +219,6 @@ function operate(...args) {
       result = divide(args[1], args[2]);
       break;
 
-    case "EXP":
-      result = multiply(args[1], Math.pow(10, args[2]));
-      break;
-
     case "exponent":
       result = Math.pow(args[1], args[2]);
       break;
@@ -212,21 +227,6 @@ function operate(...args) {
       result = divide(args[1], 100);
       break;
 
-    case "factorial":
-      result = factorial(args[1]);
-      break;
-
-    case "sqrt":
-      result = Math.sqrt(args[1]);
-      break;
-
-    case "inverse":
-      result = divide(1, args[1]);
-      break;
-
-    case "euler":
-      result = Math.E;
-      break;
     default:
       break;
   }
@@ -248,9 +248,4 @@ function multiply(num1, num2) {
 
 function divide(num1, num2) {
   return num2 == 0 ? "Cannot divide by 0" : num1 / num2;
-}
-
-function factorial(num) {
-  if (num == 0 || num == 1) return 1;
-  return num * factorial(num - 1);
 }
