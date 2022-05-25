@@ -21,7 +21,6 @@ const percentageBtn = document.getElementById("percentage");
 
 // Adding keyboard support
 document.addEventListener("keydown", (e) => {
-  console.log(e);
   // Normal digits, Keypad digits and dot
   if ((e.key >= 0 && e.key <= 9) || e.key == ".") {
     inputDigit(e.key);
@@ -29,7 +28,11 @@ document.addEventListener("keydown", (e) => {
 
   // Arithmetic operators (+, -, *, /)
   if (e.key == "+" || e.key == "-" || e.key == "*" || e.key == "/") {
-    inputOperator(e.key);
+    operationBtns.forEach((operationBtn) => {
+      if (operationBtn.getAttribute("data-value") == e.key) {
+        inputOperator(operationBtn);
+      }
+    });
   }
 
   // Equals or Enter
@@ -65,7 +68,7 @@ numBtns.forEach((numBtn) =>
 
 operationBtns.forEach((operationBtn) => {
   operationBtn.addEventListener("click", (event) =>
-    inputOperator(event.target.textContent)
+    inputOperator(event.target)
   );
 });
 
@@ -129,8 +132,6 @@ function operate(...args) {
 }
 
 function populateDisplay(digit) {
-  // let keyValue = numBtn.target.textContent;
-
   //   To prevent removing the 0 if user type on the dot
   if (
     (displayResult.textContent == "0" && digit != ".") ||
@@ -164,7 +165,7 @@ function inputDigit(digit) {
   }
 }
 
-function inputOperator(oper) {
+function inputOperator(opBtn) {
   if (currentNum != null) {
     // Set isOperatorActive to true so we could clear the screen when entering new number after an operator is pressed
     isOperatorActive = true;
@@ -177,39 +178,47 @@ function inputOperator(oper) {
     displayOperation.textContent = "";
 
     if (previousNum != null) {
-      total = operate(operator, previousNum, currentNum);
+      total = operate(
+        operator.getAttribute("data-value"),
+        previousNum,
+        currentNum
+      );
       updateUIAfterCalculation(operator, previousNum, currentNum, total);
     }
     // Save the total of the last operation or the current number in the previousNum variable
     previousNum = total != null ? total : currentNum;
     currentNum = null;
 
-    operator = oper;
+    operator = opBtn;
   } else {
-    if (!operator && oper == "-") {
+    if (!operator && opBtn.getAttribute("data-value") == "-") {
       // Add minus sign if the first number is negative
       displayResult.textContent = "-";
     } else if (
       operator &&
-      (operator == "*" ||
-        operator == "/" ||
+      (operator.getAttribute("data-value") == "*" ||
+        operator.getAttribute("data-value") == "/" ||
         operator.getAttribute("data-value") == "EXP" ||
         operator.getAttribute("data-value") == "exponent") &&
-      oper == "-"
+      opBtn.getAttribute("data-value") == "-"
     ) {
       // Add minus sign if the 2nd number is negative
       displayResult.textContent = "-";
       // isOperatorActive = false;
     } else {
       // Multiple clicks on operator
-      operator = oper;
+      operator = opBtn;
     }
   }
 }
 
 function inputEquals() {
   if (previousNum != null && currentNum != null) {
-    total = operate(operator, previousNum, currentNum);
+    total = operate(
+      operator.getAttribute("data-value"),
+      previousNum,
+      currentNum
+    );
 
     updateUIAfterCalculation(operator, previousNum, currentNum, total);
     // Set to false so if user type a digit right after equals everything is cleared (in the )
@@ -232,25 +241,23 @@ function updateUIAfterCalculation(
       displayOperation.textContent = operand1.toString().includes("e+")
         ? `${round(operand1.toString().split("e+")[0], 8)}E${
             operand1.toString().split("e+")[1]
-          } ${operator} ${operand2} =`
-        : `${round(operand1, 8)} ${operator} ${operand2} =`;
+          } ${operator.textContent} ${operand2} =`
+        : `${round(operand1, 8)} ${operator.textContent} ${operand2} =`;
 
       displayResult.textContent = `${round(
         calculationResult.toString().split("e+")[0],
         8
       )}E${calculationResult.toString().split("e+")[1]}`;
     } else {
-      displayOperation.textContent = `${round(
-        operand1,
-        8
-      )} ${operator} ${operand2} =`;
+      displayOperation.textContent = `${round(operand1, 8)} ${
+        operator.textContent
+      } ${operand2} =`;
       displayResult.textContent = round(calculationResult, 8);
     }
   } else {
-    displayOperation.textContent = `${round(
-      operand1,
-      8
-    )} ${operator} ${operand2} =`;
+    displayOperation.textContent = `${round(operand1, 8)} ${
+      operator.textContent
+    } ${operand2} =`;
     displayResult.textContent = calculationResult;
     currentNum = null;
     previousNum = null;
