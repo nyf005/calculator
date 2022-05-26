@@ -56,6 +56,14 @@ document.addEventListener("keydown", (e) => {
 
 percentageBtn.addEventListener("click", (e) => {
   if (currentNum != null || total != null) {
+    //  Calculate total before applying percentage if user type something like 9 * 3%
+    if (previousNum != null) {
+      total = operate(
+        operator.getAttribute("data-value"),
+        previousNum,
+        currentNum
+      );
+    }
     let previousTotal = total != null ? total : currentNum;
     total = operate(e.target.getAttribute("data-value"), previousTotal, null);
 
