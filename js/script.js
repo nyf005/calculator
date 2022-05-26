@@ -60,6 +60,10 @@ percentageBtn.addEventListener("click", (e) => {
     total = operate(e.target.getAttribute("data-value"), previousTotal, null);
 
     updateUIAfterCalculation(e.target, previousTotal, "", total);
+
+    // Reset previousNum and currentNum so user can use the actual result for next calculation if needed
+    previousNum = null;
+    currentNum = total;
   }
 });
 
@@ -201,7 +205,6 @@ function inputOperator(opBtn) {
       operator &&
       (operator.getAttribute("data-value") == "*" ||
         operator.getAttribute("data-value") == "/" ||
-        operator.getAttribute("data-value") == "EXP" ||
         operator.getAttribute("data-value") == "exponent") &&
       opBtn.getAttribute("data-value") == "-"
     ) {
