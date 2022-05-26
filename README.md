@@ -1,14 +1,13 @@
 # Calculator
 
-Calculator is small project I made in my self taught Fullstack Web Developer journey. This project is from The Oding Project.
+## Project description
+
+This is an online calculator project to practice the basics of HTML, CSS and Javascript. I made it in my self taught Fullstack Web Developer journey. This project is from The Oding Project.
+
 ## Links
 
 - [Try Calculator here!](https://nyf005.github.io/calculator/)
 - [Link to the Assignment](https://www.theodinproject.com/lessons/foundations-calculator)
-
-## Project description
-
-This is an online calculator project to practice the basics of HTML, CSS and Javascript
 
 ### Features
 
