@@ -22,7 +22,10 @@ const percentageBtn = document.getElementById("percentage");
 // Adding keyboard support
 document.addEventListener("keydown", (e) => {
   // Normal digits, Keypad digits and dot
-  if ((e.key >= 0 && e.key <= 9) || e.key == ".") {
+  if (
+    (e.key >= 0 && e.key <= 9) ||
+    (e.key == "." && !displayResult.textContent.includes("."))
+  ) {
     inputDigit(e.key);
   }
 
